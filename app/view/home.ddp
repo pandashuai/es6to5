@@ -1,0 +1,80 @@
+<html>
+	<head>
+		<title>Es6 To Es5</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<meta name="keywords" content="在线, es6, es5, js, 转换, to, node, 网页">
+		<meta name="description" content="网页版的在线es6转es5,一键转换，快速上手！">
+		<link rel="stylesheet" href="/public/plugin/bootstrap-3.3.7/css/bootstrap.min.css" />
+		<script type="text/javascript" src='/public/plugin/jQuery/jquery-3.2.0.min.js'></script>
+		<script type="text/javascript" src='/public/plugin/bootstrap-3.3.7/js/bootstrap.min.js'></script>
+		<script type="text/javascript" src='/public/plugin/clipboard/clipboard.min.js'></script>
+		<script type="text/javascript" src='/public/plugin/Vue/vue.js'></script>
+	</head>
+	<body>
+		<div class="container-fluid" style="margin-top: 20px;" id="conversion">
+			<div class="panel panel-default">
+				<h3 class="panel-body text-center">
+					在线 Es6 转 Es5 
+				</h3>
+			</div>
+			<div class="row">
+				<div class="col-md-5">
+					<div class="text-left" style="margin-bottom: 2px;"> 
+						<div class="btn-group" role="group" aria-label="...">
+					<button type="button" class="btn btn-primary btn-xs" data-clipboard-target="#es6textarea">复制</button>
+				</div>
+					</div>
+					
+				<textarea class="form-control" rows='30' placeholder="Es6" v-model="es6Value" id="es6textarea" ></textarea>
+				</div>
+				<div class="col-md-2">
+						<button type="button" class="btn btn-primary form-control " style="height: 100px;font-size: 29px; margin-top: 50px;margin-bottom: 50px;" v-on:click="toEs5();">开始转换</button>
+				</div>
+				<div class="col-md-5">
+					<div class="text-right" style="margin-bottom: 2px;">
+						<div class="btn-group" role="group" aria-label="...">
+							<button type="button" class="btn btn-primary btn-xs" data-clipboard-target="#es5textarea">复制</button>
+						</div>
+					</div>
+					<textarea class="form-control" rows='30' placeholder="Es5" v-model="es5Value" id="es5textarea" readonly></textarea>
+				</div>
+			</div>
+			
+			<div class="panel panel-default" style="margin-top: 50px;">
+				<div class="panel-body text-center" >
+					by：邓登攀 &nbsp; &nbsp;&nbsp;QQ邮箱： 1663998104@qq.com
+				</div>
+			</div>
+			
+		</div>
+
+
+		<script type="text/javascript">
+			new Clipboard('.btn-xs');
+			var conversion = new Vue({
+				el: '#conversion',
+				data:{
+					es6Value: '',
+					es5Value: ''
+				},
+				methods: {
+					toEs5: function(){
+						var _this = this;
+						if(!$.trim(_this.es6Value)){
+							return _this.es5Value = '';
+						}
+						$.ajax({
+							url: '/?_csrf={{ ctx.csrf }}',
+							type: 'post',
+							data: {es6Value: _this.es6Value},
+						})
+						.done(function(res) {
+							_this.es5Value = res;
+						});
+					}
+				}
+			});
+		</script>
+	</body>
+	
+</html>
